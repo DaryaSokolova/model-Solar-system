@@ -13,4 +13,4 @@
 
 ##### Solar System with labels on and orbital trails
 
-//вставить картинку :)
+![Solar system](https://github.com/DaryaSokolova/model-solar-system/blob/master/logo.PNG)

@@ -13,4 +13,4 @@
 
 ##### Solar System with labels on and orbital trails
 
-![Solat System] https://imgur.com/a/Mw0sWsH
+![Solat System](https://imgur.com/a/Mw0sWsH/image.png)

@@ -1,0 +1,4 @@
+C:\Users\Дарья\Desktop\Solar-system-master\Debug\SolarSystem.exe
+C:\Users\Дарья\Desktop\Solar-system-master\Debug\SolarSystem.pdb
+D:\c++\Solar-system-master\Debug\SolarSystem.exe
+D:\c++\Solar-system-master\Debug\SolarSystem.pdb

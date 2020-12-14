@@ -3,18 +3,69 @@
 #include <GL\glew.h>
 #include <GL\freeglut_std.h>
 #include <string>
+#include "MyError.h"
 
 using namespace std;
 
 SpaceObject::SpaceObject(double _radius, double _distance, double _orbit, double _speedOrbit, double _axisTilt, double _axisAni, double _mass)
 {
-	radius = _radius;
+	setlocale(LC_ALL, "Russian");
+
+	if (_radius <=0)
+	{
+		cout << "Неправильно указан радиус! \n";
+		cout << "Объект сгененирован с ошибкой! \n";
+	}
+	else
+	{
+		radius = _radius;
+	}
+
 	distance = _distance;
 	orbit = _orbit;
-	speedOrbit = _speedOrbit;
-	axisTilt = _axisTilt;
-	axisAni = _axisAni;
-	mass = _mass;
+
+	if (_speedOrbit < 0)
+	{
+		cout << "Неправильно указана скорость! \n";
+		cout << "Объект сгененирован с ошибкой! \n";
+	}
+	else
+	{
+		speedOrbit = _speedOrbit;
+	}
+
+	if (_axisTilt < 0)
+	{
+		cout << "Неправильно указан наклон! \n";
+		cout << "Объект сгененирован с ошибкой! \n";
+	}
+	else
+	{
+		axisTilt = _axisTilt;
+	}
+
+	if (_axisAni < 0)
+	{
+		cout << "Неправильно указано вращение! \n";
+		cout << "Объект сгененирован с ошибкой! \n";
+	}
+	else
+	{
+		axisAni = _axisAni;
+	}
+
+	if (_mass < 0)
+	{
+		cout << "Неправильно указана масса! \n";
+		cout << "Объект сгененирован с ошибкой! \n";
+	}
+	else
+	{
+		mass = _mass;
+	}
+
+	/*radius = _radius;*/
+	//speedOrbit = _speedOrbit;
 }
 
 double SpaceObject::getRadius()
@@ -130,21 +181,28 @@ void SpaceObject::string_sonvertMoons(void* font, char* string)
 	}
 }
 
-void SpaceObject::drawMoon(char* str, int activeLabel)
+void SpaceObject::drawMoon(char* str, int activeLabel, GLint texture)
 {
 	GLUquadricObj* quadric;
 	quadric = gluNewQuadric();
 	glPushMatrix();
 	glColor3ub(255, 255, 255);
-	glRotatef(orbit, 0.0, 1.0, 0.0);
-	glTranslatef(distance, 0.0, 0.0);
+	glRotatef(orbit, 0, 1, 0);
+	glTranslatef(distance, 0, 0);
 
 	if (activeLabel == 1)
 	{
-		glRasterPos3d(-1.2, 7.0, 0.0);
+		glRasterPos3d(-1.2, 7, 0);
 		string_sonvertMoons(GLUT_BITMAP_TIMES_ROMAN_10, str);
 	}
 
-	gluSphere(quadric, radius, 20.0, 20.0);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	gluQuadricTexture(quadric, 1);
+	//glDisable(GL_TEXTURE_2D);
+
+	gluSphere(quadric, getRadius(), 20, 20);
 	glPopMatrix();
 }

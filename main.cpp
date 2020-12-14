@@ -7,18 +7,21 @@
 //библиотека, чтобы подцепить пикчу
 #include "image.h"
 #include "SpaceObject.h"
+#include"MyError.h"
+
+#include <exception>
 
 #pragma comment(lib, "glew32.lib")
 
 using namespace std;
 
 //Солнце и все небесные тела
-SpaceObject sun(5.5, 0, 0, 0, 0, 0, 1.98847);				//Солнце
-SpaceObject mer(1, 7, 0, 4.74, 02.11, 0, 3.3011);			//Меркурий
+SpaceObject sun(5.5, 0, 0, 0, 0, 0, 1.98847);			//Солнце
+SpaceObject mer(1, 7, 0, 4.74, 2.11, 0, 3.3011);		//Меркурий
 SpaceObject ven(1, 11, 0, 3.50, 177.0, 0, 4.886);		//Венера
 SpaceObject ear(2, 16, 0, 2.98, 23.44, 0, 5.97);		//Земля
 SpaceObject mar(1, 21, 0, 2.41, 25.00, 0, 6.4171);		//Марс
-SpaceObject jup(3, 28, 0, 1.31, 03.13, 0, 1.89);		//Юпитер
+SpaceObject jup(3, 28, 0, 1.31, 3.13, 0, 1.89);		//Юпитер
 SpaceObject sat(3, 37, 0, 0.97, 26.70, 0, 5.66);		//Сатурн
 SpaceObject ura(2, 45, 0, 0.68, 97.77, 0, 86.05);		//Уран
 SpaceObject nep(2, 53, 0, 0.54, 28.32, 0, 1.02);		//Нептун
@@ -30,10 +33,10 @@ SpaceObject pho(0.20, 1.8, 0, 2.3, 0, 0, 1.07);		//Фобос
 SpaceObject dei(0.24, 2.4, 0, 3.6, 0, 0, 1.48);		//Деймос
 
 //спутники юпитера
-SpaceObject Io(0.36, 4.5, 0, 2.3, 0, 0, 8.93);		//Ио
-SpaceObject eur(0.24, 5, 0, 4.4, 0, 0, 4.8);			//Европа
-SpaceObject gan(0.24, 5.5, 0, 5, 0, 0, 1.48);		//Гaнимeд
-SpaceObject cal(0.24, 6, 0, 2.3, 0, 0, 1.075938);		//Kaллиcтo
+SpaceObject Io(0.60, 4.5, 0, 2.3, 0, 0, 8.93);		//Ио
+SpaceObject eur(0.50, 5, 0, 4.4, 0, 0, 4.8);		//Европа
+SpaceObject gan(0.42, 5.5, 0, 5, 0, 0, 1.48);		//Гaнимeд
+SpaceObject cal(0.37, 6, 0, 2.3, 0, 0, 0.9);		//Kaллиcтo
 
 //спутники урана
 SpaceObject titania(0.26, 2.9, 0, 7, 0, 0, 3.527);		//Титания
@@ -103,18 +106,34 @@ GLuint loadTexture(Image* image) {
 }
 
 //id текстур
-GLuint sunTexture, 
-merTexture, 
-venTexture, 
-earTexture, 
-marTexture, 
-jupTexture, 
-satTexture, 
-uraTexture, 
-nepTexture, 
-pluTexture, 
+GLuint sunTexture,
+merTexture,
+venTexture,
+earTexture,
+marTexture,
+jupTexture,
+satTexture,
+uraTexture,
+nepTexture,
+pluTexture,
+
 spaceTexture,
-cometTexture;
+
+cometTexture,
+
+moonTexture,
+
+phoTexture,
+deiTexture,
+
+IoTexture,
+eurTexture,
+ganTexture,
+calTexture,
+
+titTexture,
+
+triTexture;
 
 void preparation(void){
 	glClearColor(0, 0, 0, 0);
@@ -137,7 +156,21 @@ void preparation(void){
 	Image* sat = loadBMP("saturn.bmp");		satTexture = loadTexture(sat);		delete sat;
 	Image* ura = loadBMP("uranus.bmp");		uraTexture = loadTexture(ura);		delete ura;
 	Image* nep = loadBMP("neptune.bmp");	nepTexture = loadTexture(nep);		delete nep;
-	Image* comet = loadBMP("comet.bmp");	cometTexture = loadTexture(comet);		delete comet;
+	Image* comet = loadBMP("comet.bmp");	cometTexture = loadTexture(comet);	delete comet;
+	
+	Image* moon = loadBMP("moon.bmp");		moonTexture = loadTexture(moon);	delete moon;
+
+	Image* pho = loadBMP("phobos.bmp");		phoTexture = loadTexture(pho);		delete pho;
+	Image* dei = loadBMP("deimos.bmp");		deiTexture = loadTexture(dei);		delete dei;
+
+	Image* Io = loadBMP("Io.bmp");			IoTexture = loadTexture(Io);		delete Io;
+	Image* eur = loadBMP("europe.bmp");		eurTexture = loadTexture(eur);		delete eur;
+	Image* gan = loadBMP("ganimed.bmp");	ganTexture = loadTexture(gan);		delete gan;
+	Image* cal = loadBMP("callista.bmp");	calTexture = loadTexture(cal);		delete cal;
+
+	Image* tit = loadBMP("titania.bmp");	titTexture = loadTexture(tit);		delete tit;
+
+	Image* tri = loadBMP("triton.bmp");		triTexture = loadTexture(tri);		delete tri;
 
 	if (cat == 1)
 	{
@@ -301,7 +334,7 @@ void rendering_planets(GLUquadric* quadric, SpaceObject planet, GLint texture, c
 			}
 			if (moonsActive == 1)
 			{
-				lun.drawMoon("Moon", labelsActive);
+				lun.drawMoon("Moon", labelsActive, moonTexture);
 			}
 		}
 
@@ -315,8 +348,8 @@ void rendering_planets(GLUquadric* quadric, SpaceObject planet, GLint texture, c
 
 			if (moonsActive == 1)
 			{
-				pho.drawMoon("Phobos", labelsActive);
-				dei.drawMoon("Deimos", labelsActive);
+				pho.drawMoon("Phobos", labelsActive, phoTexture);
+				dei.drawMoon("Deimos", labelsActive, deiTexture);
 			}
 		}
 
@@ -332,10 +365,10 @@ void rendering_planets(GLUquadric* quadric, SpaceObject planet, GLint texture, c
 
 			if (moonsActive == 1)
 			{
-				eur.drawMoon("Europe", labelsActive);
-				gan.drawMoon("Ganimed", labelsActive);
-				cal.drawMoon("Callista", labelsActive);
-				Io.drawMoon("Io", labelsActive);
+				eur.drawMoon("Europe", labelsActive, eurTexture);
+				gan.drawMoon("Ganimed", labelsActive, ganTexture);
+				cal.drawMoon("Callista", labelsActive, calTexture);
+				Io.drawMoon("Io", labelsActive, IoTexture);
 			}
 		}
 
@@ -348,7 +381,7 @@ void rendering_planets(GLUquadric* quadric, SpaceObject planet, GLint texture, c
 
 			if (moonsActive == 1)
 			{
-				titania.drawMoon("Титания", labelsActive);
+				titania.drawMoon("Titania", labelsActive, titTexture);
 			}
 		}
 
@@ -361,7 +394,7 @@ if (s == "Neptune")
 
 	if (moonsActive == 1)
 	{
-		tri.drawMoon("Triton", labelsActive);
+		tri.drawMoon("Triton", labelsActive, triTexture);
 	}
 }
 
@@ -811,58 +844,58 @@ void keyInput(unsigned char key, int x, int y)
 	case 'I':
 
 		std::cout << "Объект: Sun \n";
-		std::cout << "Масса объекта: " << sun.getMass() << "10^30кг \n";
+		std::cout << "Масса объекта: " << sun.getMass() << "*10^30кг \n";
 
 		std::cout << "Объект: Mercury \n";
-		std::cout << "Масса объекта: " << mer.getMass() << "10^23кг \n";
+		std::cout << "Масса объекта: " << mer.getMass() << "*10^23кг \n";
 
 		std::cout << "Объект: Mars \n";
-		std::cout << "Масса объекта: " << mar.getMass() << "10^23кг \n";
+		std::cout << "Масса объекта: " << mar.getMass() << "*10^23кг \n";
 
 		std::cout << "Объект: Ganimed \n";
-		std::cout << "Масса объекта: " << gan.getMass() << "10^23кг \n";
+		std::cout << "Масса объекта: " << gan.getMass() << "*10^23кг \n";
 
 		std::cout << "Объект: Callista \n";
-		std::cout << "Масса объекта: " << cal.getMass() << "10^23кг \n";
+		std::cout << "Масса объекта: " << cal.getMass() << "*10^23кг \n";
 
 		std::cout << "Объект: Venus \n";
-		std::cout << "Масса объекта: " << ven.getMass() << "10^24кг \n";
+		std::cout << "Масса объекта: " << ven.getMass() << "*10^24кг \n";
 
 		std::cout << "Объект: Earth \n";
-		std::cout << "Масса объекта: " << ear.getMass() << "10^24кг \n";
+		std::cout << "Масса объекта: " << ear.getMass() << "*10^24кг \n";
 
 		std::cout << "Объект: Jupiter \n";
-		std::cout << "Масса объекта: " << jup.getMass() << "10^27кг \n";
+		std::cout << "Масса объекта: " << jup.getMass() << "*10^27кг \n";
 
 		std::cout << "Объект: Saturn \n";
-		std::cout << "Масса объекта: " << sat.getMass() << "10^26кг \n";
+		std::cout << "Масса объекта: " << sat.getMass() << "*10^26кг \n";
 
 		std::cout << "Объект: Neptune \n";
-		std::cout << "Масса объекта: " << nep.getMass() << "10^26кг \n";
+		std::cout << "Масса объекта: " << nep.getMass() << "*10^26кг \n";
 
 		std::cout << "Объект: Uranus \n";
-		std::cout << "Масса объекта: " << ura.getMass() << "10^25кг \n";
+		std::cout << "Масса объекта: " << ura.getMass() << "*10^25кг \n";
 
 		std::cout << "Объект: Moon \n";
-		std::cout << "Масса объекта: " << lun.getMass() << "10^22кг \n";
+		std::cout << "Масса объекта: " << lun.getMass() << "*10^22кг \n";
 
 		std::cout << "Объект: Io \n";
-		std::cout << "Масса объекта: " << Io.getMass() << "10^22кг \n";
+		std::cout << "Масса объекта: " << Io.getMass() << "*10^22кг \n";
 
 		std::cout << "Объект: Europe \n";
-		std::cout << "Масса объекта: " << eur.getMass() << "10^22кг \n";
+		std::cout << "Масса объекта: " << eur.getMass() << "*10^22кг \n";
 
 		std::cout << "Объект: Triton \n";
-		std::cout << "Масса объекта: " << tri.getMass() << "10^22кг \n";
+		std::cout << "Масса объекта: " << tri.getMass() << "*10^22кг \n";
 
 		std::cout << "Объект: Phobos \n";
-		std::cout << "Масса объекта: " << pho.getMass() << "10^16кг \n";
+		std::cout << "Масса объекта: " << pho.getMass() << "*10^16кг \n";
 
 		std::cout << "Объект: Deimos \n";
-		std::cout << "Масса объекта: " << dei.getMass() << "10^15кг \n";
+		std::cout << "Масса объекта: " << dei.getMass() << "*10^15кг \n";
 
 		std::cout << "Объект: Titania \n";
-		std::cout << "Масса объекта: " << dei.getMass() << "10^21кг \n";
+		std::cout << "Масса объекта: " << dei.getMass() << "*10^21кг \n";
 
 		break;
 

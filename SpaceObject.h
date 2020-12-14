@@ -1,13 +1,16 @@
 ﻿#ifndef CLASS_PLANET
 #define CLASS_PLANET
 
+#include <GL\glew.h>
+#include <GL\freeglut_std.h>
+
 class SpaceObject
 {
 
 private:
 	double radius; //радиус
 	double distance; //расстояние от солнца
-	double orbit; //орбита 
+	double orbit; //орбита, угол поворота вокруг 0 0 0 
 	double speedOrbit; //скорость движения по орбите
 	double axisTilt; //угол наклона
 	double axisAni; //угол поворота (изначально 0)
@@ -19,7 +22,7 @@ public:
 
 	void drawSmallOrbit(void);
 	void string_sonvertMoons(void* font, char* string);
-	void drawMoon(char* str, int activeLabel);
+	void drawMoon(char* str, int activeLabel, GLint texture);
 
 	double getRadius();
 	double getDistance();
@@ -39,8 +42,5 @@ public:
 
 	void oneLoop();
 	void oneLoopOurAxis();
-
-	//void Info(string s);
-
 };
 #endif

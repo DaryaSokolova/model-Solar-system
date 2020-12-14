@@ -8,6 +8,7 @@
     <ClCompile Include="SpaceObject.cpp">
       <Filter>SpaceObject</Filter>
     </ClCompile>
+    <ClCompile Include="MyError.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Image">
@@ -24,5 +25,6 @@
     <ClInclude Include="SpaceObject.h">
       <Filter>SpaceObject</Filter>
     </ClInclude>
+    <ClInclude Include="MyError.h" />
   </ItemGroup>
 </Project>

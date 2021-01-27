@@ -4,9 +4,7 @@
 
 1. Open SolarSystem.vcxproj
 
-2. Read the project setup documentation
-
-3. Run
+2. Run
 
 
 ## Example
